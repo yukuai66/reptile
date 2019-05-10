@@ -28,6 +28,10 @@ const scheduleCronstyle = () => {
       new Promise(function (resolve) {
         superagent.get("https://cs.fang.anjuke.com/loupan/all/p1/")
           .end((err, pres) => {
+            //
+            if(err){
+              fs.writeFile(`./log/error-${format("YYYY-MM-DD HH-mm-ss")}.txt`, JSON.stringify(err))
+            }
             let $ = cheerio.load(pres.text);
             let count = $(".result em").text(),
                 pageNum = $(".item-mod").length - 2,
