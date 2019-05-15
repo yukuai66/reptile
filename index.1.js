@@ -6,8 +6,45 @@ const schedule = require('node-schedule'); //定时任务
 const fs = require('fs'); // 载入fs模块
 const moment = require('moment');
 
-// const scheduleCronstyle = () => {
-//   schedule.scheduleJob('30 1 3 * * *', () => {
+class Reptile {
+  constructor() {
+    this.pageInfor = {};
+    this.initial();
+  }
+
+  initial = () => {
+    this.getPageInfor().then(res => {
+      this.pageInfor
+    });
+  }
+
+  getPageInfor = () => {
+    return new Promise(function (resolve) {
+      superagent.get("https://cs.fang.anjuke.com/loupan/all/p1/")
+      // .end((err, pres) => {
+      //   if(err){
+      //     fs.writeFile(`./log/error-${format("YYYY-MM-DD HH-mm-ss")}.txt`, JSON.stringify(err))
+      //   }
+      //   let $ = cheerio.load(pres.text);
+      //   let count = $(".result em").text(),
+      //       pageNum = $(".item-mod").length - 2,
+      //       pageTotal = parseInt(count / pageNum);
+
+      //   let dataInfor = {
+      //       count: count,
+      //       pageTotal: pageTotal,
+      //   }
+      //   resolve(dataInfor)
+      // })
+      resolve({ count: 1288, pageTotal: 2 });
+    })
+  }
+}
+
+var reptile = new Reptile();
+
+const scheduleCronstyle = () => {
+  schedule.scheduleJob('30 1 3 * * *', () => {
 
     let ep = eventproxy(),
       pageUrls = [];
@@ -24,26 +61,7 @@ const moment = require('moment');
     }
 
 
-    let getFirstPageInfor =
-      new Promise(function (resolve) {
-        superagent.get("https://cs.fang.anjuke.com/loupan/all/p1/")
-          .end((err, pres) => {
-            if(err){
-              fs.writeFile(`./log/error-${format("YYYY-MM-DD HH-mm-ss")}.txt`, JSON.stringify(err))
-            }
-            let $ = cheerio.load(pres.text);
-            let count = $(".result em").text(),
-                pageNum = $(".item-mod").length - 2,
-                pageTotal = parseInt(count / pageNum);
-
-            let dataInfor = {
-                count: count,
-                pageTotal: pageTotal,
-            }
-            resolve(dataInfor)
-          })
-        // resolve({ count: 1288, pageTotal: 2 });
-      })
+    
 
     getFirstPageInfor.then(data => {
       for (let i = 1; i <= data.pageTotal; i++) {
@@ -79,13 +97,13 @@ const moment = require('moment');
               len = $(".item-mod").length,
               itemArr = [];
 
-            for (let i = 2; i < len; i++) {
+            for (let i = 0; i < len; i++) {
               let nowEl = $(".item-mod").eq(i);
               if (!nowEl.attr("data-link")) continue;
 
               let doorModalLen = $(".item-mod").eq(2).find(".huxing span").length;
-              let saleType = nowEl.find(".tag-panel .status-icon").eq(1).attr("class") && nowEl.find(".tag-panel .status-icon").eq(1).attr("class").split(" ")[1];
-              let saleStatus = nowEl.find(".tag-panel .status-icon").eq(0).attr("class") && nowEl.find(".tag-panel .status-icon").eq(0).attr("class").split(" ")[1];
+              let saleType = nowEl.find(".tag-panel .status-icon").eq(1).attr("class").split(" ")[1];
+              let saleStatus = nowEl.find(".tag-panel .status-icon").eq(0).attr("class").split(" ")[1];
               let item = {
                 title: nowEl.find(".items-name").text(),
                 address: strRe(nowEl.find(".address").text()),
@@ -110,7 +128,7 @@ const moment = require('moment');
     })
 
 
-//   });
-// }
+  });
+}
 
-// scheduleCronstyle();
+scheduleCronstyle();
