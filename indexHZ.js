@@ -7,7 +7,7 @@ const fs = require('fs'); // 载入fs模块
 const moment = require('moment');
 
 const scheduleCronstyle = () => {
-  schedule.scheduleJob('30 1 3 * * *', () => {
+  schedule.scheduleJob('45 1 3 * * *', () => {
 
     let ep = eventproxy(),
       pageUrls = [];
@@ -26,7 +26,7 @@ const scheduleCronstyle = () => {
 
     let getFirstPageInfor =
       new Promise(function (resolve) {
-        superagent.get("https://cs.fang.anjuke.com/loupan/all/p1/")
+        superagent.get("https://hz.fang.anjuke.com/loupan/all/p1/")
           .end((err, pres) => {
             if(err){
               fs.writeFile(`./log/error-${format("YYYY-MM-DD HH-mm-ss")}.txt`, JSON.stringify(err))
@@ -47,7 +47,7 @@ const scheduleCronstyle = () => {
 
     getFirstPageInfor.then(data => {
       for (let i = 1; i <= data.pageTotal; i++) {
-        pageUrls.push(`https://cs.fang.anjuke.com/loupan/all/p${i}/`);
+        pageUrls.push(`https://hz.fang.anjuke.com/loupan/all/p${i}/`);
       };
 
 
@@ -58,7 +58,7 @@ const scheduleCronstyle = () => {
           newArr = [...newArr, ...data]
         })
         let text = JSON.stringify(newArr)
-        let filePath = `./csData/data-cs-${moment().format("YYYY-MM-DD")}.json`;
+        let filePath = `./hzData/data-cs-${moment().format("YYYY-MM-DD")}.json`;
         fs.writeFile(filePath, text, function (err) {
           if (err) console.log('写文件操作失败');
           else console.log('写文件操作成功');
