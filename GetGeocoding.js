@@ -70,7 +70,7 @@ class Geocoding {
       let params = {
         key: "562ee21d01d4057b28f7ee721dc716fd",
         keywords: name,
-        city: "长沙",
+        city: this.params.city,
         output: "JSON",
         citylimit: true, //仅返回指定城市数据
         extensions: "all"

@@ -5,6 +5,7 @@ const eventproxy = require('eventproxy');  //流程控制
 const schedule = require('node-schedule'); //定时任务
 const fs = require('fs'); // 载入fs模块
 const moment = require('moment');
+const getGeocoding = require("./GetGeocoding");
 
 const scheduleCronstyle = () => {
   schedule.scheduleJob('45 1 3 * * *', () => {
@@ -28,17 +29,17 @@ const scheduleCronstyle = () => {
       new Promise(function (resolve) {
         superagent.get("https://hz.fang.anjuke.com/loupan/all/p1/")
           .end((err, pres) => {
-            if(err){
+            if (err) {
               fs.writeFile(`./log/error-${format("YYYY-MM-DD HH-mm-ss")}.txt`, JSON.stringify(err))
             }
             let $ = cheerio.load(pres.text);
             let count = $(".result em").text(),
-                pageNum = $(".item-mod").length - 2,
-                pageTotal = parseInt(count / pageNum);
+              pageNum = $(".item-mod").length - 2,
+              pageTotal = parseInt(count / pageNum);
 
             let dataInfor = {
-                count: count,
-                pageTotal: pageTotal,
+              count: count,
+              pageTotal: pageTotal,
             }
             resolve(dataInfor)
           })
@@ -59,9 +60,13 @@ const scheduleCronstyle = () => {
         })
         let text = JSON.stringify(newArr)
         let filePath = `./hzData/data-cs-${moment().format("YYYY-MM-DD")}.json`;
+        let lastFilePath = `./hzData/data-cs-${moment().subtract(1, 'days').format("YYYY-MM-DD")}.json`;
         fs.writeFile(filePath, text, function (err) {
-          if (err) console.log('写文件操作失败');
-          else console.log('写文件操作成功');
+          let geocoding = new getGeocoding({
+            filePath: filePath,
+            lastFilePath: lastFilePath,
+            city: "杭州",
+          });
         });
       });
 

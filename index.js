@@ -64,7 +64,11 @@ const scheduleCronstyle = () => {
         let filePath = `./csData/data-cs-${moment().format("YYYY-MM-DD")}.json`;
         let lastFilePath = `./csData/data-cs-${moment().subtract(1, 'days').format("YYYY-MM-DD")}.json`;
         fs.writeFile(filePath, text, function (err) {
-          let geocoding = new getGeocoding({ filePath: filePath, lastFilePath: lastFilePath });
+          let geocoding = new getGeocoding({
+            filePath: filePath,
+            lastFilePath: lastFilePath,
+            city: "长沙",
+          });
         });
       });
 
