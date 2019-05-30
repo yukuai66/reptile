@@ -59,8 +59,8 @@ const scheduleCronstyle = () => {
           newArr = [...newArr, ...data]
         })
         let text = JSON.stringify(newArr)
-        let filePath = `./hzData/data-cs-${moment().format("YYYY-MM-DD")}.json`;
-        let lastFilePath = `./hzData/data-cs-${moment().subtract(1, 'days').format("YYYY-MM-DD")}.json`;
+        let filePath = `./hzData/data-hz-${moment().format("YYYY-MM-DD")}.json`;
+        let lastFilePath = `./hzData/data-hz-${moment().subtract(1, 'days').format("YYYY-MM-DD")}.json`;
         fs.writeFile(filePath, text, function (err) {
           let geocoding = new getGeocoding({
             filePath: filePath,
