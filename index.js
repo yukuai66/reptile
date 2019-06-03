@@ -7,8 +7,8 @@ const fs = require('fs'); // 载入fs模块
 const moment = require('moment');
 const getGeocoding = require("./GetGeocoding");
 
-const scheduleCronstyle = () => {
-  schedule.scheduleJob('30 1 3 * * *', () => {
+// const scheduleCronstyle = () => {
+//   schedule.scheduleJob('30 1 3 * * *', () => {
 
     let ep = eventproxy(),
       pageUrls = [];
@@ -117,7 +117,7 @@ const scheduleCronstyle = () => {
     })
 
 
-  });
-}
+//   });
+// }
 
-scheduleCronstyle();
+// scheduleCronstyle();

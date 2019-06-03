@@ -42,7 +42,7 @@ class Geocoding {
         let lastDataItem = this.lastData.find(x => x.title === title);
 
         //如果昨天数据里有经纬度就用昨天的经纬度 否则从 高德地图获取
-        if (lastDataItem.location) {
+        if (lastDataItem && lastDataItem.location) {
           item.realAddress = lastDataItem.address;
           item.gridcode = lastDataItem.gridcode; //地理格id
           item.location = lastDataItem.location;
